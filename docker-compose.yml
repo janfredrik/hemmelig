@@ -1,0 +1,17 @@
+services:
+  hemmelig:
+    build: .
+    container_name: hemmelig
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - hemmelig_data:/data
+    environment:
+      - DB_PATH=/data/hemmelig.db
+      - PORT=3000
+    # Optional: set TZ for correct expiry times in logs
+    # - TZ=Europe/Oslo
+
+volumes:
+  hemmelig_data:
