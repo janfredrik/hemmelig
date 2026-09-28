@@ -27,18 +27,13 @@ export default function Layout({ children, center = false }: { children: React.R
           </span>
           <span className="font-serif text-[28px] leading-none">Hemmelig</span>
         </Link>
-        <div className="flex items-center gap-4">
-          <span className="hidden sm:inline font-mono text-xs uppercase tracking-[0.06em] text-app-muted">
-            Zero-knowledge · AES-256-GCM
-          </span>
-          <button
-            onClick={toggle}
-            aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'}
-            className="w-11 h-11 rounded-xl border border-app-border bg-app-surface text-app-ink flex items-center justify-center hover:border-app-muted transition-colors"
-          >
-            {dark ? <SunIcon size={18} /> : <MoonIcon size={18} />}
-          </button>
-        </div>
+        <button
+          onClick={toggle}
+          aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'}
+          className="w-11 h-11 rounded-xl border border-app-border bg-app-surface text-app-ink flex items-center justify-center hover:border-app-muted transition-colors"
+        >
+          {dark ? <SunIcon size={18} /> : <MoonIcon size={18} />}
+        </button>
       </header>
 
       <main className={`flex-1 px-4 sm:px-12 py-10 sm:py-14 ${center ? 'flex items-center justify-center' : ''}`}>

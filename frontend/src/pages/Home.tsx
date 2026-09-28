@@ -48,7 +48,6 @@ export default function Home() {
   const [maxViews, setMaxViews]         = useState(1)
   const [pwdEnabled, setPwdEnabled]     = useState(false)
   const [password, setPassword]         = useState('')
-  const [burnOnExpiry, setBurnOnExpiry] = useState(false)
   const [loading, setLoading]           = useState(false)
   const [error, setError]               = useState('')
 
@@ -91,12 +90,9 @@ export default function Home() {
 
         {/* Hero */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-12">
-          <div className="flex flex-col gap-4">
-            <span className="eyebrow">One-time secrets</span>
-            <h1 className="display text-5xl sm:text-[76px] sm:leading-[0.95]">
-              Share it once. <span className="italic text-app-muted">Then it’s gone.</span>
-            </h1>
-          </div>
+          <h1 className="display text-5xl sm:text-[76px] sm:leading-[0.95]">
+            Passwords don’t belong <span className="italic text-app-muted">in chat history.</span>
+          </h1>
           <p className="max-w-[360px] text-[15px] leading-relaxed text-app-muted">
             Your message is encrypted in this browser before it leaves. The key lives only in the
             link — the server never sees the plaintext.
@@ -222,11 +218,6 @@ export default function Home() {
                   <span className="text-[13px] text-app-muted">Send it separately from the link.</span>
                 </>
               )}
-            </div>
-
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold">Burn when time runs out</span>
-              <Toggle checked={burnOnExpiry} onChange={setBurnOnExpiry} label="Burn when time runs out" />
             </div>
 
             <button
