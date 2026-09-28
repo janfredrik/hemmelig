@@ -89,11 +89,11 @@ export default function Home() {
       <div className="max-w-[1184px] mx-auto flex flex-col gap-10">
 
         {/* Hero */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-12">
-          <h1 className="display text-5xl sm:text-[76px] sm:leading-[0.95]">
+        <div className="flex flex-col gap-5">
+          <h1 className="display text-5xl sm:text-[56px] lg:text-[64px] xl:text-[76px] sm:leading-[0.95] lg:whitespace-nowrap">
             Passwords don’t belong <span className="italic text-app-muted">in chat history.</span>
           </h1>
-          <p className="max-w-[360px] text-[15px] leading-relaxed text-app-muted">
+          <p className="max-w-[560px] text-[15px] leading-relaxed text-app-muted">
             Your message is encrypted in this browser before it leaves. The key lives only in the
             link — the server never sees the plaintext.
           </p>
