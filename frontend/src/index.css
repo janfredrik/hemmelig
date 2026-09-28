@@ -3,62 +3,88 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    color-scheme: light;
+    --c-bg:          243 240 232;
+    --c-surface:     255 255 255;
+    --c-raised:      248 246 240;
+    --c-border:      225 220 208;
+    --c-ink:         27 26 23;
+    --c-muted:       98 94 85;
+    --c-accent:      13 107 98;
+    --c-on-accent:   255 255 255;
+    --c-accent-soft: 220 238 233;
+    --c-ember:       169 62 27;
+    --c-ember-soft:  247 228 218;
+    --c-track:       211 206 194;
+  }
+
+  :root.dark {
+    color-scheme: dark;
+    --c-bg:          13 15 14;
+    --c-surface:     22 25 23;
+    --c-raised:      30 34 32;
+    --c-border:      43 48 45;
+    --c-ink:         236 234 227;
+    --c-muted:       160 158 149;
+    --c-accent:      70 209 190;
+    --c-on-accent:   6 32 28;
+    --c-accent-soft: 18 48 43;
+    --c-ember:       242 130 90;
+    --c-ember-soft:  54 28 18;
+    --c-track:       58 63 59;
+  }
+
   body {
-    background-color: #0c0c0c;
-    color: #e8e8e8;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
-    -webkit-font-smoothing: antialiased;
+    @apply bg-app-bg text-app-ink font-sans antialiased;
   }
 
   *:focus-visible {
-    outline: 2px solid #00b8a9;
-    outline-offset: 2px;
+    @apply outline outline-2 outline-offset-2 outline-app-accent;
   }
 
   ::selection {
-    background-color: #00b8a920;
-    color: #00b8a9;
+    @apply bg-app-accent/20 text-app-ink;
   }
 
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #161616;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 3px;
+  ::placeholder {
+    @apply text-app-muted opacity-100;
   }
 }
 
 @layer components {
   .card {
-    @apply bg-app-surface border border-app-border rounded-xl;
+    @apply bg-app-surface border border-app-border rounded-[20px];
   }
 
-  .btn-primary {
-    @apply flex items-center gap-2 px-5 py-2.5 bg-app-raised border border-app-border rounded-lg
-           text-sm font-medium text-zinc-200 hover:bg-[#252525] hover:border-zinc-600
-           transition-all duration-150 cursor-pointer;
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.08em] text-app-accent;
+  }
+
+  .display {
+    @apply font-serif font-normal leading-none tracking-[-0.01em];
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 h-12 px-5 rounded-xl text-[15px] font-medium
+           transition-colors duration-150 cursor-pointer
+           disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-accent {
-    @apply flex items-center gap-2 px-5 py-2.5 bg-app-accent rounded-lg
-           text-sm font-semibold text-black hover:bg-[#00a99b]
-           transition-all duration-150 cursor-pointer;
+    @apply btn bg-app-accent text-app-on-accent font-semibold hover:bg-app-accent/90;
   }
 
-  .input-field {
-    @apply w-full bg-transparent border-0 text-zinc-200 placeholder:text-app-muted
-           focus:outline-none text-sm resize-none;
+  .btn-outline {
+    @apply btn bg-app-surface border border-app-border text-app-ink hover:border-app-muted;
   }
 
-  .section-label {
-    @apply flex items-center gap-2.5 text-sm font-medium text-zinc-300;
+  .btn-ember {
+    @apply btn bg-app-ember-soft border border-app-ember text-app-ember font-semibold hover:bg-app-ember/15;
   }
 
-  .icon-badge {
-    @apply w-8 h-8 rounded-lg flex items-center justify-center shrink-0;
+  .field {
+    @apply w-full h-11 px-3.5 rounded-[10px] bg-app-raised border border-app-border text-app-ink text-sm
+           focus:outline-none focus:border-app-accent;
   }
 }

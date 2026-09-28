@@ -2,40 +2,43 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { generateKey, keyToBase64url, encrypt } from '../crypto'
 import { apiCreateSecret } from '../api'
+import Layout from '../components/Layout'
+import { ArrowRightIcon, ShieldIcon, Spinner } from '../components/Icons'
 
 const EXPIRY_OPTIONS = [
-  { label: '1 Hour',   value: 3600 },
-  { label: '6 Hours',  value: 21600 },
-  { label: '1 Day',    value: 86400 },
-  { label: '3 Days',   value: 259200 },
-  { label: '7 Days',   value: 604800 },
-  { label: '30 Days',  value: 2592000 },
+  { label: '1 hour',  value: 3600 },
+  { label: '6 hours', value: 21600 },
+  { label: '1 day',   value: 86400 },
+  { label: '3 days',  value: 259200 },
+  { label: '7 days',  value: 604800 },
+  { label: '30 days', value: 2592000 },
 ]
 
-function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
+const MAX_VIEWS = 100
+
+function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
     <button
       role="switch"
       aria-checked={checked}
+      aria-label={label}
       onClick={() => onChange(!checked)}
-      className={`relative inline-flex w-11 h-6 rounded-full transition-colors duration-200 shrink-0 ${
-        checked ? 'bg-app-accent' : 'bg-zinc-700'
+      className={`relative inline-flex w-[46px] h-7 rounded-full transition-colors duration-200 shrink-0 ${
+        checked ? 'bg-app-accent' : 'bg-app-track'
       }`}
     >
-      <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${
-        checked ? 'translate-x-5' : 'translate-x-0'
+      <span className={`absolute top-[3px] left-[3px] w-[22px] h-[22px] rounded-full bg-white shadow-sm transition-transform duration-200 ${
+        checked ? 'translate-x-[18px]' : 'translate-x-0'
       }`} />
     </button>
   )
 }
 
-function LockIcon({ size = 16 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 1C8.676 1 6 3.676 6 7v1H4v15h16V8h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v1H8V7c0-2.276 1.724-4 4-4zm0 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
-    </svg>
-  )
-}
+const TRUST_POINTS = [
+  { title: 'Encrypted in your browser', body: 'AES-256-GCM via the Web Crypto API.' },
+  { title: 'The key stays in the link', body: 'It sits after the #, so it is never sent to the server.' },
+  { title: 'Burns after reading',       body: 'Gone after the last view or when time runs out.' },
+]
 
 export default function Home() {
   const navigate = useNavigate()
@@ -61,16 +64,20 @@ export default function Home() {
       const encryptedData = await encrypt(content, key)
       const keyB64        = await keyToBase64url(key)
 
+      const isPasswordProtected = pwdEnabled && password.length > 0
       const id = await apiCreateSecret({
         encryptedData,
         maxViews,
         expiresIn,
-        password:            pwdEnabled ? password : '',
-        isPasswordProtected: pwdEnabled && password.length > 0,
+        password: isPasswordProtected ? password : '',
+        isPasswordProtected,
       })
 
       const secretUrl = `${window.location.origin}/secret/${id}#key=${keyB64}`
-      navigate(`/created/${id}`, { state: { secretUrl, id } })
+      const expiryLabel = EXPIRY_OPTIONS.find(o => o.value === expiresIn)?.label ?? ''
+      navigate(`/created/${id}`, {
+        state: { secretUrl, id, expiryLabel, maxViews, isPasswordProtected },
+      })
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Something went wrong.')
     } finally {
@@ -79,182 +86,172 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-app-bg py-12 px-4">
-      <div className="max-w-2xl mx-auto">
+    <Layout>
+      <div className="max-w-[1184px] mx-auto flex flex-col gap-10">
 
-        {/* Header */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-app-surface border border-app-border mb-5">
-            <LockIcon size={24} />
+        {/* Hero */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-12">
+          <div className="flex flex-col gap-4">
+            <span className="eyebrow">One-time secrets</span>
+            <h1 className="display text-5xl sm:text-[76px] sm:leading-[0.95]">
+              Share it once. <span className="italic text-app-muted">Then it’s gone.</span>
+            </h1>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight mb-3">
-            Hemme<span className="text-app-accent">lig</span>
-          </h1>
-          <p className="text-zinc-500 text-sm max-w-sm mx-auto leading-relaxed">
-            Share secrets securely with encrypted messages that automatically{' '}
-            <span className="text-app-accent">self-destruct</span> after being read.
+          <p className="max-w-[360px] text-[15px] leading-relaxed text-app-muted">
+            Your message is encrypted in this browser before it leaves. The key lives only in the
+            link — the server never sees the plaintext.
           </p>
         </div>
 
-        {/* Compose card */}
-        <div className="card mb-4">
-          <div className="p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] gap-6 items-stretch">
+
+          {/* Composer */}
+          <section className="card flex flex-col overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-[18px] border-b border-app-border">
+              <label htmlFor="secret" className="text-sm font-semibold">Your secret</label>
+              <span className="font-mono text-xs text-app-muted">
+                {content.length} {content.length === 1 ? 'character' : 'characters'}
+              </span>
+            </div>
             <textarea
-              className="input-field min-h-[180px] leading-relaxed"
-              placeholder="Type your secret here… it will be encrypted in your browser before being sent."
+              id="secret"
               value={content}
               onChange={e => setContent(e.target.value)}
+              placeholder="Paste a password, an API key, a private note…"
+              className="flex-1 min-h-[300px] p-6 bg-transparent font-mono text-[15px] leading-[1.7] resize-none focus:outline-none"
             />
-            <div className="text-right mt-2">
-              <span className="text-xs text-app-muted">{content.length} characters</span>
-            </div>
-          </div>
-
-          <div className="border-t border-app-border px-4 py-3 flex items-center gap-2">
-            <span className="text-app-muted text-sm font-mono">#</span>
-            <input
-              type="text"
-              className="input-field"
-              placeholder="Optional title (not encrypted)"
-            />
-          </div>
-
-          {error && (
-            <div className="border-t border-red-900/40 px-4 py-3 bg-red-950/20">
-              <p className="text-red-400 text-sm">{error}</p>
-            </div>
-          )}
-
-          <div className="border-t border-app-border px-4 py-3 flex justify-end">
-            <button
-              onClick={handleCreate}
-              disabled={loading}
-              className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-              </svg>
-              {loading ? 'Encrypting…' : 'Create'}
-            </button>
-          </div>
-        </div>
-
-        {/* Security card */}
-        <div className="card">
-          <div className="px-5 py-4 flex items-center justify-between border-b border-app-border">
-            <div>
-              <h2 className="font-semibold text-zinc-100">Security</h2>
-              <p className="text-xs text-app-muted mt-0.5">Configure security settings for your secret</p>
-            </div>
-          </div>
-
-          {/* Expiration + Max views */}
-          <div className="grid grid-cols-2 gap-px bg-app-border">
-            <div className="bg-app-surface px-5 py-4">
-              <div className="section-label mb-3">
-                <span className="icon-badge bg-blue-950/60 text-blue-400">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm.5-13H11v6l4.75 2.85.75-1.23-4-2.37V7z"/>
-                  </svg>
-                </span>
-                Expiration
-              </div>
-              <select
-                value={expiresIn}
-                onChange={e => setExpiresIn(Number(e.target.value))}
-                className="w-full bg-app-raised border border-app-border rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-app-accent cursor-pointer"
-              >
-                {EXPIRY_OPTIONS.map(o => (
-                  <option key={o.value} value={o.value}>{o.label}</option>
-                ))}
-              </select>
-              <p className="text-xs text-app-muted mt-2">How long the secret stays available</p>
-            </div>
-
-            <div className="bg-app-surface px-5 py-4">
-              <div className="section-label mb-3">
-                <span className="icon-badge bg-teal-950/60 text-app-accent">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                  </svg>
-                </span>
-                Max views
-              </div>
-              <div className="flex items-center gap-3">
-                <input
-                  type="range"
-                  min={1}
-                  max={100}
-                  value={maxViews}
-                  onChange={e => setMaxViews(Number(e.target.value))}
-                  className="flex-1 accent-app-accent cursor-pointer h-1.5"
-                />
-                <span className="text-sm font-mono text-zinc-200 w-8 text-right shrink-0">{maxViews}</span>
-              </div>
-              <p className="text-xs text-app-muted mt-2">Secret burns after this many views</p>
-            </div>
-          </div>
-
-          {/* Password protection */}
-          <div className="px-5 py-4 flex items-center justify-between border-t border-app-border">
-            <div className="section-label">
-              <span className="icon-badge bg-purple-950/60 text-purple-400">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-                </svg>
-              </span>
-              Password Protection
-            </div>
-            <Toggle checked={pwdEnabled} onChange={setPwdEnabled} />
-          </div>
-
-          {pwdEnabled && (
-            <div className="px-5 pb-4 border-t border-app-border pt-4">
+            <div className="flex items-center gap-3 px-6 py-4 border-t border-app-border">
+              <span className="font-mono text-[15px] text-app-muted" aria-hidden="true">#</span>
+              <label htmlFor="title" className="sr-only">Title</label>
               <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="Enter a passphrase for this secret…"
-                className="w-full bg-app-raised border border-app-border rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-app-muted focus:outline-none focus:border-app-accent"
+                id="title"
+                type="text"
+                placeholder="Optional title — not encrypted"
+                className="flex-1 h-7 bg-transparent text-sm focus:outline-none"
               />
-              <p className="text-xs text-app-muted mt-2">
-                Recipients will need this passphrase in addition to the secret URL.
-              </p>
             </div>
-          )}
-
-          {/* Burn on expiry */}
-          <div className="px-5 py-4 flex items-center justify-between border-t border-app-border">
-            <div className="section-label">
-              <span className="icon-badge bg-orange-950/60 text-orange-400">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
-                </svg>
-              </span>
-              Burn after time expires
+            {error && (
+              <div role="alert" className="px-6 py-3 border-t border-app-ember/40 bg-app-ember-soft text-app-ember text-sm">
+                {error}
+              </div>
+            )}
+            <div className="flex items-center gap-2.5 px-6 py-3.5 bg-app-raised border-t border-app-border text-[13px] text-app-muted">
+              <ShieldIcon size={14} />
+              Encrypted locally with a fresh 256-bit key before upload
             </div>
-            <Toggle checked={burnOnExpiry} onChange={setBurnOnExpiry} />
-          </div>
+          </section>
 
-          {/* Bottom create */}
-          <div className="border-t border-app-border px-5 py-4 flex justify-center">
+          {/* Settings */}
+          <section className="card p-6 flex flex-col gap-6">
+
+            <fieldset className="flex flex-col gap-3">
+              <legend className="text-sm font-semibold mb-3">Expires after</legend>
+              <div className="grid grid-cols-3 gap-2">
+                {EXPIRY_OPTIONS.map(o => {
+                  const active = o.value === expiresIn
+                  return (
+                    <button
+                      key={o.value}
+                      type="button"
+                      aria-pressed={active}
+                      onClick={() => setExpiresIn(o.value)}
+                      className={`h-11 rounded-[10px] border text-sm transition-colors ${
+                        active
+                          ? 'bg-app-ink border-app-ink text-app-bg font-semibold'
+                          : 'bg-app-raised border-app-border text-app-ink hover:border-app-muted'
+                      }`}
+                    >
+                      {o.label}
+                    </button>
+                  )
+                })}
+              </div>
+            </fieldset>
+
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col gap-1">
+                <span className="text-sm font-semibold" id="views-label">Max views</span>
+                <span className="text-[13px] text-app-muted">Burns after the last view</span>
+              </div>
+              <div className="flex items-center rounded-xl border border-app-border bg-app-raised" role="group" aria-labelledby="views-label">
+                <button
+                  type="button"
+                  aria-label="Fewer views"
+                  disabled={maxViews <= 1}
+                  onClick={() => setMaxViews(v => Math.max(1, v - 1))}
+                  className="w-11 h-11 text-lg disabled:opacity-40"
+                >−</button>
+                <input
+                  type="number"
+                  min={1}
+                  max={MAX_VIEWS}
+                  value={maxViews}
+                  aria-label="Max views"
+                  onChange={e => setMaxViews(Math.min(MAX_VIEWS, Math.max(1, Number(e.target.value) || 1)))}
+                  className="w-10 bg-transparent text-center font-mono text-base font-medium focus:outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                />
+                <button
+                  type="button"
+                  aria-label="More views"
+                  disabled={maxViews >= MAX_VIEWS}
+                  onClick={() => setMaxViews(v => Math.min(MAX_VIEWS, v + 1))}
+                  className="w-11 h-11 text-lg disabled:opacity-40"
+                >+</button>
+              </div>
+            </div>
+
+            <div className="h-px bg-app-border" />
+
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold">Passphrase</span>
+                <Toggle checked={pwdEnabled} onChange={setPwdEnabled} label="Passphrase protection" />
+              </div>
+              {pwdEnabled && (
+                <>
+                  <label htmlFor="pass" className="sr-only">Passphrase</label>
+                  <input
+                    id="pass"
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="Choose a passphrase"
+                    autoFocus
+                    className="field font-mono"
+                  />
+                  <span className="text-[13px] text-app-muted">Send it separately from the link.</span>
+                </>
+              )}
+            </div>
+
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold">Burn when time runs out</span>
+              <Toggle checked={burnOnExpiry} onChange={setBurnOnExpiry} label="Burn when time runs out" />
+            </div>
+
             <button
               onClick={handleCreate}
               disabled={loading}
-              className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed px-8"
+              className="btn-accent mt-auto h-14 rounded-[14px] text-base"
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-              </svg>
-              {loading ? 'Encrypting…' : 'Create'}
+              {loading ? <><Spinner /> Encrypting…</> : <>Encrypt &amp; create link <ArrowRightIcon size={18} /></>}
             </button>
-          </div>
+          </section>
         </div>
 
-        <p className="text-center text-xs text-app-muted mt-6">
-          Your secret is encrypted in your browser. The server never sees the plaintext.
-        </p>
+        {/* Trust points */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
+          {TRUST_POINTS.map((p, i) => (
+            <div key={p.title} className="flex gap-3.5">
+              <span className="font-serif text-[28px] leading-none text-app-accent">0{i + 1}</span>
+              <div className="flex flex-col gap-1">
+                <span className="text-sm font-semibold">{p.title}</span>
+                <span className="text-[13px] leading-normal text-app-muted">{p.body}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </Layout>
   )
 }
