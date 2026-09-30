@@ -2,45 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Schibsted Grotesk';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('/fonts/schibsted-grotesk-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Azeret Mono';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/azeret-mono-latin.woff2') format('woff2');
+}
+
 @layer base {
   :root {
     color-scheme: light;
-    --c-bg:          243 240 232;
-    --c-surface:     255 255 255;
-    --c-raised:      248 246 240;
-    --c-border:      225 220 208;
-    --c-ink:         27 26 23;
-    --c-muted:       98 94 85;
-    --c-accent:      13 107 98;
-    --c-on-accent:   255 255 255;
-    --c-accent-soft: 220 238 233;
-    --c-ember:       169 62 27;
-    --c-ember-soft:  247 228 218;
-    --c-track:       211 206 194;
+    --c-bg:           246 247 249;
+    --c-surface:      255 255 255;
+    --c-subtle:       242 244 247;
+    --c-border:       226 229 235;
+    --c-ink:          16 22 35;
+    --c-muted:        88 97 115;
+    --c-accent:       37 89 235;
+    --c-on-accent:    255 255 255;
+    --c-accent-soft:  233 239 254;
+    --c-success:      21 128 82;
+    --c-success-soft: 230 246 238;
+    --c-danger:       190 36 36;
+    --c-danger-soft:  254 237 237;
   }
 
   :root.dark {
     color-scheme: dark;
-    --c-bg:          13 15 14;
-    --c-surface:     22 25 23;
-    --c-raised:      30 34 32;
-    --c-border:      43 48 45;
-    --c-ink:         236 234 227;
-    --c-muted:       160 158 149;
-    --c-accent:      70 209 190;
-    --c-on-accent:   6 32 28;
-    --c-accent-soft: 18 48 43;
-    --c-ember:       242 130 90;
-    --c-ember-soft:  54 28 18;
-    --c-track:       58 63 59;
+    --c-bg:           11 13 18;
+    --c-surface:      20 23 30;
+    --c-subtle:       27 31 40;
+    --c-border:       41 46 58;
+    --c-ink:          236 238 243;
+    --c-muted:        155 163 180;
+    --c-accent:       92 138 255;
+    --c-on-accent:    6 12 32;
+    --c-accent-soft:  27 37 70;
+    --c-success:      78 208 150;
+    --c-success-soft: 16 42 32;
+    --c-danger:       248 118 118;
+    --c-danger-soft:  56 21 24;
+  }
+
+  html {
+    scrollbar-color: rgb(var(--c-border)) rgb(var(--c-bg));
   }
 
   body {
     @apply bg-app-bg text-app-ink font-sans antialiased;
   }
 
+  input, textarea {
+    caret-color: rgb(var(--c-accent));
+  }
+
   *:focus-visible {
-    @apply outline outline-2 outline-offset-2 outline-app-accent;
+    outline: 2px solid rgb(var(--c-accent));
+    outline-offset: 2px;
   }
 
   ::selection {
@@ -54,37 +81,74 @@
 
 @layer components {
   .card {
-    @apply bg-app-surface border border-app-border rounded-[20px];
+    @apply bg-app-surface border border-app-border rounded-[14px];
+    box-shadow: 0 1px 2px rgb(16 22 35 / 0.04), 0 8px 24px -12px rgb(16 22 35 / 0.12);
   }
-
-  .eyebrow {
-    @apply font-mono text-xs uppercase tracking-[0.08em] text-app-accent;
+  :root.dark .card {
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -16px rgb(0 0 0 / 0.6);
   }
 
   .display {
-    @apply font-serif font-normal leading-none tracking-[-0.01em];
+    @apply font-semibold tracking-[-0.025em] leading-[1.05] text-balance;
+  }
+
+  .field-label {
+    @apply text-[13px] font-medium text-app-muted;
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-2 h-12 px-5 rounded-xl text-[15px] font-medium
-           transition-colors duration-150 cursor-pointer
+    @apply inline-flex items-center justify-center gap-2 h-11 px-4 rounded-[10px] text-[15px] font-medium
+           transition-[background-color,border-color,color,opacity] duration-150 cursor-pointer
            disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
-  .btn-accent {
-    @apply btn bg-app-accent text-app-on-accent font-semibold hover:bg-app-accent/90;
+  .btn-primary {
+    @apply btn bg-app-accent text-app-on-accent font-semibold hover:bg-app-accent/90
+           disabled:opacity-100 disabled:bg-app-subtle disabled:text-app-muted disabled:border disabled:border-app-border;
   }
 
-  .btn-outline {
-    @apply btn bg-app-surface border border-app-border text-app-ink hover:border-app-muted;
+  .btn-secondary {
+    @apply btn bg-app-surface border border-app-border text-app-ink hover:bg-app-subtle;
   }
 
-  .btn-ember {
-    @apply btn bg-app-ember-soft border border-app-ember text-app-ember font-semibold hover:bg-app-ember/15;
+  .btn-danger-quiet {
+    @apply btn text-app-danger hover:bg-app-danger-soft;
+  }
+
+  .btn-danger {
+    @apply btn bg-app-danger text-app-bg font-semibold hover:bg-app-danger/90;
   }
 
   .field {
-    @apply w-full h-11 px-3.5 rounded-[10px] bg-app-raised border border-app-border text-app-ink text-sm
-           focus:outline-none focus:border-app-accent;
+    @apply w-full h-11 px-3.5 rounded-[10px] bg-app-surface border border-app-border text-app-ink text-[15px]
+           transition-[border-color,box-shadow] focus:outline-none focus:border-app-accent focus:ring-[3px] focus:ring-app-accent/20
+           aria-[invalid=true]:border-app-danger;
+  }
+
+
+  /* One entrance per route: content is visible by default and only eases in. */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .rise { animation: rise 280ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+  /* The success check draws itself on the link page. */
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .check-draw path {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    animation: draw 420ms cubic-bezier(0.16, 1, 0.3, 1) 180ms forwards;
+  }
+
+  @keyframes key-glow {
+    from { background-color: rgb(var(--c-accent) / 0.22); }
+    to   { background-color: rgb(var(--c-accent) / 0.08); }
+  }
+  .key-mark { @apply rounded-[3px] px-0.5 -mx-0.5 bg-app-accent/10; animation: key-glow 1200ms cubic-bezier(0.16, 1, 0.3, 1) 400ms both; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rise, .key-mark { animation: none; }
+    .check-draw path { animation: none; stroke-dashoffset: 0; }
   }
 }

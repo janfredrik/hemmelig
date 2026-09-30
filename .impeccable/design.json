@@ -1,0 +1,663 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-30T16:10:09+00:00",
+  "title": "Design System: Hemmelig",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Cool Grey Ground",
+        "canonical": "rgb(246 247 249) via --c-bg",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#252526",
+          "#414243",
+          "#606162",
+          "#828284",
+          "#a4a5a6",
+          "#c9c9ca",
+          "#eeeeef"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "rgb(255 255 255) via --c-surface",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "subtle": {
+        "role": "neutral",
+        "displayName": "Recessed Grey",
+        "canonical": "rgb(242 244 247) via --c-subtle",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242526",
+          "#414244",
+          "#606163",
+          "#818284",
+          "#a4a5a7",
+          "#c8c9ca",
+          "#eeeeef"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgb(226 229 235) via --c-border",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#242528",
+          "#404246",
+          "#5f6165",
+          "#808286",
+          "#a3a5a9",
+          "#c8c9cc",
+          "#eeeeef"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "rgb(16 22 35) via --c-ink",
+        "tonalRamp": [
+          "#090b10",
+          "#21252e",
+          "#3d424d",
+          "#5b616e",
+          "#7c8290",
+          "#9fa5b1",
+          "#c5c9d1",
+          "#edeef1"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Slate Muted",
+        "canonical": "rgb(88 97 115) via --c-muted",
+        "tonalRamp": [
+          "#090b11",
+          "#20252f",
+          "#3c424f",
+          "#5a6170",
+          "#7b8391",
+          "#9fa5b2",
+          "#c5c9d2",
+          "#edeef2"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Confident Blue",
+        "canonical": "rgb(37 89 235) via --c-accent",
+        "tonalRamp": [
+          "#00052d",
+          "#051b60",
+          "#173890",
+          "#3259bb",
+          "#537ddd",
+          "#7ca3f6",
+          "#adc9ff",
+          "#e4efff"
+        ]
+      },
+      "on-accent": {
+        "role": "primary",
+        "displayName": "On Blue",
+        "canonical": "rgb(255 255 255) via --c-on-accent",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "Blue Wash",
+        "canonical": "rgb(233 239 254) via --c-accent-soft",
+        "tonalRamp": [
+          "#0a0b0f",
+          "#22252c",
+          "#3e424b",
+          "#5d616b",
+          "#7e828c",
+          "#a1a5ae",
+          "#c6c9cf",
+          "#edeef1"
+        ]
+      },
+      "success": {
+        "role": "tertiary",
+        "displayName": "Done Green",
+        "canonical": "rgb(21 128 82) via --c-success",
+        "tonalRamp": [
+          "#001104",
+          "#002f17",
+          "#005030",
+          "#28714d",
+          "#50936e",
+          "#7cb494",
+          "#aed4bd",
+          "#e5f2ea"
+        ]
+      },
+      "success-soft": {
+        "role": "tertiary",
+        "displayName": "Green Wash",
+        "canonical": "rgb(230 246 238) via --c-success-soft",
+        "tonalRamp": [
+          "#080c0a",
+          "#202723",
+          "#3b4540",
+          "#59645f",
+          "#7a8580",
+          "#9ea8a3",
+          "#c4cbc8",
+          "#edefee"
+        ]
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "Destroy Red",
+        "canonical": "rgb(190 36 36) via --c-danger",
+        "tonalRamp": [
+          "#230000",
+          "#500000",
+          "#7d0f11",
+          "#a6332e",
+          "#ca5a51",
+          "#e7867b",
+          "#fbb5ac",
+          "#ffe8e4"
+        ]
+      },
+      "danger-soft": {
+        "role": "tertiary",
+        "displayName": "Red Wash",
+        "canonical": "rgb(254 237 237) via --c-danger-soft",
+        "tonalRamp": [
+          "#0e0a0a",
+          "#2a2323",
+          "#493f3f",
+          "#695e5e",
+          "#8b7f7f",
+          "#aca2a2",
+          "#cec7c7",
+          "#f0eeee"
+        ]
+      },
+      "bg-dark": {
+        "role": "neutral",
+        "displayName": "Cool Grey Ground (dark)",
+        "canonical": "rgb(11 13 18) via --c-bg under :root.dark",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#242529",
+          "#404247",
+          "#5f6166",
+          "#808288",
+          "#a3a5aa",
+          "#c8c9cc",
+          "#eeeef0"
+        ]
+      },
+      "surface-dark": {
+        "role": "neutral",
+        "displayName": "Paper White (dark)",
+        "canonical": "rgb(20 23 30) via --c-surface under :root.dark",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#23252a",
+          "#3f4248",
+          "#5e6168",
+          "#7f8289",
+          "#a2a5ab",
+          "#c7c9cd",
+          "#eeeef0"
+        ]
+      },
+      "subtle-dark": {
+        "role": "neutral",
+        "displayName": "Recessed Grey (dark)",
+        "canonical": "rgb(27 31 40) via --c-subtle under :root.dark",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#22252b",
+          "#3f424a",
+          "#5d616a",
+          "#7e828b",
+          "#a1a5ad",
+          "#c7c9cf",
+          "#edeef0"
+        ]
+      },
+      "border-dark": {
+        "role": "neutral",
+        "displayName": "Hairline (dark)",
+        "canonical": "rgb(41 46 58) via --c-border under :root.dark",
+        "tonalRamp": [
+          "#090b0f",
+          "#22252c",
+          "#3e424b",
+          "#5c616c",
+          "#7e828d",
+          "#a1a5af",
+          "#c6c9d0",
+          "#edeef1"
+        ]
+      },
+      "ink-dark": {
+        "role": "neutral",
+        "displayName": "Ink (dark)",
+        "canonical": "rgb(236 238 243) via --c-ink under :root.dark",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242527",
+          "#414245",
+          "#606164",
+          "#818286",
+          "#a4a5a8",
+          "#c8c9cb",
+          "#eeeeef"
+        ]
+      },
+      "muted-dark": {
+        "role": "neutral",
+        "displayName": "Slate Muted (dark)",
+        "canonical": "rgb(155 163 180) via --c-muted under :root.dark",
+        "tonalRamp": [
+          "#090b10",
+          "#21252d",
+          "#3d424d",
+          "#5b616e",
+          "#7d828f",
+          "#a0a5b0",
+          "#c5c9d1",
+          "#edeef1"
+        ]
+      },
+      "accent-dark": {
+        "role": "primary",
+        "displayName": "Confident Blue (dark)",
+        "canonical": "rgb(92 138 255) via --c-accent under :root.dark",
+        "tonalRamp": [
+          "#010629",
+          "#0a1d5a",
+          "#1e3a89",
+          "#395bb2",
+          "#5a7ed4",
+          "#82a3ee",
+          "#b1c9fe",
+          "#e6efff"
+        ]
+      },
+      "on-accent-dark": {
+        "role": "primary",
+        "displayName": "On Blue (dark)",
+        "canonical": "rgb(6 12 32) via --c-on-accent under :root.dark",
+        "tonalRamp": [
+          "#080b13",
+          "#1f2532",
+          "#3a4254",
+          "#586176",
+          "#7a8297",
+          "#9da5b7",
+          "#c4c9d6",
+          "#eceef3"
+        ]
+      },
+      "accent-soft-dark": {
+        "role": "primary",
+        "displayName": "Blue Wash (dark)",
+        "canonical": "rgb(27 37 70) via --c-accent-soft under :root.dark",
+        "tonalRamp": [
+          "#070b16",
+          "#1d2438",
+          "#38415b",
+          "#56607e",
+          "#7782a0",
+          "#9ba5bf",
+          "#c2c9dc",
+          "#eceef5"
+        ]
+      },
+      "success-dark": {
+        "role": "tertiary",
+        "displayName": "Done Green (dark)",
+        "canonical": "rgb(78 208 150) via --c-success under :root.dark",
+        "tonalRamp": [
+          "#001204",
+          "#003116",
+          "#00522e",
+          "#00744b",
+          "#3a966c",
+          "#6eb792",
+          "#a6d6bc",
+          "#e3f3ea"
+        ]
+      },
+      "success-soft-dark": {
+        "role": "tertiary",
+        "displayName": "Green Wash (dark)",
+        "canonical": "rgb(16 42 32) via --c-success-soft under :root.dark",
+        "tonalRamp": [
+          "#050d0a",
+          "#1a2922",
+          "#34473f",
+          "#51675d",
+          "#73887e",
+          "#98aaa2",
+          "#c0cdc7",
+          "#ebf0ed"
+        ]
+      },
+      "danger-dark": {
+        "role": "tertiary",
+        "displayName": "Destroy Red (dark)",
+        "canonical": "rgb(248 118 118) via --c-danger under :root.dark",
+        "tonalRamp": [
+          "#200001",
+          "#4a050d",
+          "#751e23",
+          "#9d3d3f",
+          "#c16261",
+          "#de8b88",
+          "#f4b8b5",
+          "#ffe9e7"
+        ]
+      },
+      "danger-soft-dark": {
+        "role": "tertiary",
+        "displayName": "Red Wash (dark)",
+        "canonical": "rgb(56 21 24) via --c-danger-soft under :root.dark",
+        "tonalRamp": [
+          "#140708",
+          "#341e1f",
+          "#56393a",
+          "#795758",
+          "#9a7879",
+          "#bb9c9d",
+          "#d9c3c3",
+          "#f4ecec"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Create-page headline only; 52px desktop, 36px mobile; second line in muted."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Link page headline; 40px desktop, 32px mobile."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Locked, gone, error and unlocked states; 32/28px (30/26px on the unlocked card)."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "\"Hemmelig\" in the header."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Ledes and state explanations."
+      },
+      "control-label": {
+        "displayName": "Control label",
+        "purpose": "Card and setting labels, summary values."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Muted field labels, hints, counters, trust line."
+      },
+      "secret": {
+        "displayName": "Secret (mono)",
+        "purpose": "The secret text, passphrase being chosen, numbers."
+      },
+      "link": {
+        "displayName": "Link (mono)",
+        "purpose": "The shareable URL."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card",
+        "value": "0 1px 2px rgb(16 22 35 / 0.04), 0 8px 24px -12px rgb(16 22 35 / 0.12)",
+        "purpose": "Every route card, light theme."
+      },
+      {
+        "name": "card-dark",
+        "value": "0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -16px rgb(0 0 0 / 0.6)",
+        "purpose": "Every route card, dark theme."
+      },
+      {
+        "name": "nudge",
+        "value": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        "purpose": "Active language segment and switch thumb."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 3px rgb(var(--c-accent) / 0.2)",
+        "purpose": "Fields and stepper on focus, with accent border."
+      },
+      {
+        "name": "editor-focus",
+        "value": "inset 0 0 0 2px rgb(var(--c-accent))",
+        "purpose": "Borderless secret textarea section on focus-within."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "All entrances and signature moments."
+      },
+      {
+        "name": "rise",
+        "value": "280ms; opacity 0 to 1, translateY(6px) to none",
+        "purpose": "One entrance per route; also the burn panel and passphrase field."
+      },
+      {
+        "name": "check-draw",
+        "value": "420ms after 180ms delay; stroke-dashoffset 24 to 0",
+        "purpose": "Success check on the link page."
+      },
+      {
+        "name": "key-glow",
+        "value": "1200ms after 400ms delay; accent tint 22% to 8%",
+        "purpose": "Highlights the #key fragment of the new link."
+      },
+      {
+        "name": "state",
+        "value": "150ms",
+        "purpose": "Color, border and opacity transitions on controls."
+      },
+      {
+        "name": "switch",
+        "value": "200ms ease-out",
+        "purpose": "Switch track color and thumb travel."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "Removes rise and key glow; the check renders fully drawn."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary-hero",
+      "description": "The one primary action per card: create link, copy link, unlock secret. 48px, full card width.",
+      "html": "<button class=\"ds-btn-primary\">Encrypt &amp; create link <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></button>",
+      "css": ".ds-btn-primary { display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; height:48px; padding:0 16px; border:none; border-radius:10px; background:rgb(var(--c-accent)); color:rgb(var(--c-on-accent)); font-family:\"Schibsted Grotesk\",system-ui,sans-serif; font-size:16px; font-weight:600; cursor:pointer; transition:background-color 150ms, opacity 150ms; } .ds-btn-primary:hover { background:rgb(var(--c-accent) / 0.9); } .ds-btn-primary:focus-visible { outline:2px solid rgb(var(--c-accent)); outline-offset:2px; } .ds-btn-primary:disabled { background:rgb(var(--c-subtle)); color:rgb(var(--c-muted)); border:1px solid rgb(var(--c-border)); cursor:not-allowed; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Neutral actions: New secret, Cancel, state-card exits.",
+      "html": "<button class=\"ds-btn-secondary\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"/></svg> New secret</button>",
+      "css": ".ds-btn-secondary { display:inline-flex; align-items:center; justify-content:center; gap:8px; height:44px; padding:0 16px; border:1px solid rgb(var(--c-border)); border-radius:10px; background:rgb(var(--c-surface)); color:rgb(var(--c-ink)); font-family:\"Schibsted Grotesk\",system-ui,sans-serif; font-size:15px; font-weight:500; cursor:pointer; transition:background-color 150ms, border-color 150ms; } .ds-btn-secondary:hover { background:rgb(var(--c-subtle)); } .ds-btn-secondary:focus-visible { outline:2px solid rgb(var(--c-accent)); outline-offset:2px; }"
+    },
+    {
+      "name": "Burn Now (Danger Quiet)",
+      "kind": "button",
+      "refersTo": "button-danger-quiet",
+      "description": "First step of destruction: unfilled red text button that opens the inline confirmation.",
+      "html": "<button class=\"ds-btn-danger-quiet\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22c4 0 7-3 7-7 0-4-3-6-4-9-1 2-2 3-4 3 0-2-1-4-2-6-2 3-5 6-5 12 0 4 4 7 8 7z\"/></svg> Burn now</button>",
+      "css": ".ds-btn-danger-quiet { display:inline-flex; align-items:center; gap:8px; height:44px; padding:0 16px; border:none; border-radius:10px; background:transparent; color:rgb(var(--c-danger)); font-family:\"Schibsted Grotesk\",system-ui,sans-serif; font-size:15px; font-weight:500; cursor:pointer; transition:background-color 150ms; } .ds-btn-danger-quiet:hover { background:rgb(var(--c-danger-soft)); } .ds-btn-danger-quiet:focus-visible { outline:2px solid rgb(var(--c-accent)); outline-offset:2px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Single-line input (passphrase). Blue border plus soft ring on focus; red border when invalid.",
+      "html": "<input class=\"ds-field\" type=\"password\" placeholder=\"Choose a passphrase\">",
+      "css": ".ds-field { width:100%; height:44px; padding:0 14px; border:1px solid rgb(var(--c-border)); border-radius:10px; background:rgb(var(--c-surface)); color:rgb(var(--c-ink)); caret-color:rgb(var(--c-accent)); font-family:\"Azeret Mono\",ui-monospace,monospace; font-size:15px; transition:border-color 150ms, box-shadow 150ms; } .ds-field::placeholder { color:rgb(var(--c-muted)); } .ds-field:focus { outline:none; border-color:rgb(var(--c-accent)); box-shadow:0 0 0 3px rgb(var(--c-accent) / 0.2); } .ds-field[aria-invalid=\"true\"] { border-color:rgb(var(--c-danger)); }"
+    },
+    {
+      "name": "Route Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "The single lifted surface per route; sections inside are split by hairlines.",
+      "html": "<section class=\"ds-card\"><div class=\"ds-card-body\"><strong>Your secret</strong></div><div class=\"ds-card-body ds-card-rule\">Settings</div></section>",
+      "css": ".ds-card { max-width:720px; background:rgb(var(--c-surface)); border:1px solid rgb(var(--c-border)); border-radius:14px; box-shadow:0 1px 2px rgb(16 22 35 / 0.04), 0 8px 24px -12px rgb(16 22 35 / 0.12); overflow:hidden; font-family:\"Schibsted Grotesk\",system-ui,sans-serif; color:rgb(var(--c-ink)); font-size:15px; } :host-context(.dark) .ds-card { box-shadow:0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -16px rgb(0 0 0 / 0.6); } .ds-card-body { padding:20px 24px; } .ds-card-rule { border-top:1px solid rgb(var(--c-border)); color:rgb(var(--c-muted)); }"
+    },
+    {
+      "name": "Expiry Options",
+      "kind": "custom",
+      "refersTo": "expiry-option",
+      "description": "Six small radio boxes, one row on desktop, 3 by 2 on phones; selected takes the blue wash.",
+      "html": "<fieldset class=\"ds-expiry\"><legend>Expires after</legend><div class=\"ds-expiry-row\"><label class=\"ds-expiry-opt\"><input type=\"radio\" name=\"ds-exp\">1 hour</label><label class=\"ds-expiry-opt\"><input type=\"radio\" name=\"ds-exp\">6 hours</label><label class=\"ds-expiry-opt\"><input type=\"radio\" name=\"ds-exp\">1 day</label><label class=\"ds-expiry-opt\"><input type=\"radio\" name=\"ds-exp\" checked>3 days</label><label class=\"ds-expiry-opt\"><input type=\"radio\" name=\"ds-exp\">7 days</label><label class=\"ds-expiry-opt\"><input type=\"radio\" name=\"ds-exp\">30 days</label></div></fieldset>",
+      "css": ".ds-expiry { border:0; margin:0; padding:0; font-family:\"Schibsted Grotesk\",system-ui,sans-serif; } .ds-expiry legend { font-size:13px; font-weight:500; color:rgb(var(--c-muted)); margin-bottom:8px; } .ds-expiry-row { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; } .ds-expiry-opt { position:relative; display:flex; align-items:center; justify-content:center; height:40px; padding:0 4px; border:1px solid rgb(var(--c-border)); border-radius:9px; background:rgb(var(--c-surface)); color:rgb(var(--c-ink)); font-size:14px; white-space:nowrap; cursor:pointer; transition:background-color 150ms, border-color 150ms, color 150ms; } .ds-expiry-opt:hover { background:rgb(var(--c-subtle)); } .ds-expiry-opt input { position:absolute; opacity:0; width:1px; height:1px; } .ds-expiry-opt:has(input:checked) { border-color:rgb(var(--c-accent)); background:rgb(var(--c-accent-soft)); color:rgb(var(--c-accent)); font-weight:600; } .ds-expiry-opt:has(input:focus-visible) { outline:2px solid rgb(var(--c-accent)); outline-offset:2px; } @media (max-width:639px) { .ds-expiry-row { grid-template-columns:repeat(3,1fr); } }"
+    },
+    {
+      "name": "Max Views Stepper",
+      "kind": "custom",
+      "refersTo": "stepper",
+      "description": "Compact bordered minus / mono number / plus group, 1 to 100.",
+      "html": "<div class=\"ds-stepper\" role=\"group\" aria-label=\"Max views\"><button type=\"button\" aria-label=\"Fewer views\" disabled><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M5 12h14\"/></svg></button><input type=\"number\" value=\"1\" min=\"1\" max=\"100\" aria-label=\"Max views\"><button type=\"button\" aria-label=\"More views\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg></button></div>",
+      "css": ".ds-stepper { display:inline-flex; align-items:center; height:40px; border:1px solid rgb(var(--c-border)); border-radius:9px; background:rgb(var(--c-surface)); transition:border-color 150ms, box-shadow 150ms; } .ds-stepper:focus-within { border-color:rgb(var(--c-accent)); box-shadow:0 0 0 3px rgb(var(--c-accent) / 0.2); } .ds-stepper button { width:40px; height:100%; display:flex; align-items:center; justify-content:center; border:0; background:transparent; color:rgb(var(--c-muted)); cursor:pointer; transition:color 150ms, background-color 150ms; } .ds-stepper button:first-child { border-radius:9px 0 0 9px; } .ds-stepper button:last-child { border-radius:0 9px 9px 0; } .ds-stepper button:hover:not(:disabled) { color:rgb(var(--c-ink)); background:rgb(var(--c-subtle)); } .ds-stepper button:disabled { opacity:0.4; cursor:not-allowed; } .ds-stepper input { width:36px; border:0; background:transparent; text-align:center; color:rgb(var(--c-ink)); font-family:\"Azeret Mono\",ui-monospace,monospace; font-size:15px; font-weight:500; font-variant-numeric:tabular-nums; -moz-appearance:textfield; } .ds-stepper input:focus { outline:none; } .ds-stepper input::-webkit-inner-spin-button, .ds-stepper input::-webkit-outer-spin-button { -webkit-appearance:none; }"
+    },
+    {
+      "name": "Passphrase Switch",
+      "kind": "custom",
+      "refersTo": "switch-on",
+      "description": "Pill switch; the passphrase field appears only while it is on.",
+      "html": "<label class=\"ds-switch-row\"><span>Passphrase</span><button type=\"button\" role=\"switch\" aria-checked=\"true\" class=\"ds-switch\"><span></span></button></label>",
+      "css": ".ds-switch-row { display:inline-flex; align-items:center; gap:12px; font-family:\"Schibsted Grotesk\",system-ui,sans-serif; font-size:14px; font-weight:600; color:rgb(var(--c-ink)); cursor:pointer; } .ds-switch { position:relative; width:44px; height:26px; border:0; border-radius:9999px; background:rgb(var(--c-border)); cursor:pointer; transition:background-color 200ms; } .ds-switch[aria-checked=\"true\"] { background:rgb(var(--c-accent)); } .ds-switch span { position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:9999px; background:#fff; box-shadow:0 1px 2px rgb(0 0 0 / 0.05); transition:transform 200ms ease-out; } .ds-switch[aria-checked=\"true\"] span { transform:translateX(18px); } .ds-switch:focus-visible { outline:2px solid rgb(var(--c-accent)); outline-offset:2px; }"
+    },
+    {
+      "name": "Link With Key",
+      "kind": "custom",
+      "refersTo": "key-mark",
+      "description": "The shareable URL in a recessed well; the #key fragment is blue on a settling highlight.",
+      "html": "<p class=\"ds-link\"><span class=\"ds-link-base\">https://hemmelig.example/secret/a1b2c3</span><span class=\"ds-link-key\">#key=Zk3uQ9pX0vRt</span></p>",
+      "css": ".ds-link { margin:0; padding:12px 14px; border:1px solid rgb(var(--c-border)); border-radius:10px; background:rgb(var(--c-subtle)); font-family:\"Azeret Mono\",ui-monospace,monospace; font-size:13.5px; line-height:1.625; word-break:break-all; user-select:all; } .ds-link-base { color:rgb(var(--c-muted)); } .ds-link-key { color:rgb(var(--c-accent)); font-weight:500; border-radius:3px; padding:0 2px; margin:0 -2px; background:rgb(var(--c-accent) / 0.08); animation:ds-key-glow 1200ms cubic-bezier(0.16,1,0.3,1) 400ms both; } @keyframes ds-key-glow { from { background-color:rgb(var(--c-accent) / 0.22); } to { background-color:rgb(var(--c-accent) / 0.08); } } @media (prefers-reduced-motion: reduce) { .ds-link-key { animation:none; } }"
+    },
+    {
+      "name": "Trust Row",
+      "kind": "custom",
+      "refersTo": "trust-chip",
+      "description": "Three plain facts below the create card (binding user choice): 1 column on phones, 3 from 640px up.",
+      "html": "<ul class=\"ds-trust\"><li><span class=\"ds-trust-chip\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"4\" y=\"11\" width=\"16\" height=\"10\" rx=\"2\"/><path d=\"M8 11V7a4 4 0 0 1 8 0v4\"/></svg></span><div><strong>Encrypted in your browser</strong><span>AES-256-GCM via the Web Crypto API.</span></div></li><li><span class=\"ds-trust-chip\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"/></svg></span><div><strong>The key stays in the link</strong><span>It sits after the #, so it is never sent to the server.</span></div></li><li><span class=\"ds-trust-chip\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22c4 0 7-3 7-7 0-4-3-6-4-9-1 2-2 3-4 3 0-2-1-4-2-6-2 3-5 6-5 12 0 4 4 7 8 7z\"/></svg></span><div><strong>Burns after reading</strong><span>Gone after the last view or when time runs out.</span></div></li></ul>",
+      "css": ".ds-trust { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr; gap:16px; font-family:\"Schibsted Grotesk\",system-ui,sans-serif; } @media (min-width:640px) { .ds-trust { grid-template-columns:repeat(3,1fr); gap:24px; } } .ds-trust li { display:flex; gap:12px; } .ds-trust-chip { margin-top:2px; width:28px; height:28px; flex-shrink:0; border-radius:9999px; background:rgb(var(--c-accent-soft)); color:rgb(var(--c-accent)); display:flex; align-items:center; justify-content:center; } .ds-trust div { display:flex; flex-direction:column; gap:2px; } .ds-trust strong { font-size:14px; font-weight:600; color:rgb(var(--c-ink)); } .ds-trust div span { font-size:13px; line-height:1.5; color:rgb(var(--c-muted)); }"
+    },
+    {
+      "name": "Burn Confirmation",
+      "kind": "custom",
+      "refersTo": "banner-danger",
+      "description": "Inline alertdialog replacing the Burn now row; Cancel is focused first.",
+      "html": "<div class=\"ds-burn\" role=\"alertdialog\" aria-label=\"Confirm burn\"><p>Destroy this secret for good? The link stops working immediately.</p><button class=\"ds-burn-cancel\">Cancel</button><button class=\"ds-burn-yes\">Burn it</button></div>",
+      "css": ".ds-burn { display:flex; flex-wrap:wrap; align-items:center; gap:12px; padding:16px; border:1px solid rgb(var(--c-danger) / 0.3); border-radius:14px; background:rgb(var(--c-danger-soft)); font-family:\"Schibsted Grotesk\",system-ui,sans-serif; } .ds-burn p { flex:1; min-width:18ch; margin:0; font-size:14px; font-weight:500; color:rgb(var(--c-danger)); } .ds-burn button { height:44px; padding:0 16px; border-radius:10px; font:inherit; font-size:15px; cursor:pointer; } .ds-burn-cancel { border:1px solid rgb(var(--c-border)); background:rgb(var(--c-surface)); color:rgb(var(--c-ink)); font-weight:500; } .ds-burn-cancel:hover { background:rgb(var(--c-subtle)); } .ds-burn-yes { border:0; background:rgb(var(--c-danger)); color:rgb(var(--c-bg)); font-weight:600; } .ds-burn-yes:hover { background:rgb(var(--c-danger) / 0.9); } .ds-burn button:focus-visible { outline:2px solid rgb(var(--c-accent)); outline-offset:2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Category Standard, Played Straight",
+    "overview": "Hemmelig looks like the tool you already trust for this job: a calm, exact utility in the lineage of 1Password, Bitwarden Send, Stripe and Apple settings. Every route is one focused card on a cool-grey ground, with a short sentence-case headline above it and nothing competing beside it. The craft lives in proportion, hairlines, type spacing and state handling, not in decoration.\n\nDensity is moderate and even: 44px controls, 20 to 24px card padding, a single column capped at 720px. One confident blue does all the work of \"act here\": the primary button, focus, the selected option, and the key segment of the link. Green appears only when something succeeded; red only when something is destroyed or failed. The dark theme mirrors the light one on near-black slate rather than reinterpreting it.\n\nThe user tried and rejected a themed \"security envelope\" world. Nothing from it survives: no envelope, seal, stamp, postal label or \"Rekommandert\" framing anywhere in the visual system or copy.",
+    "keyCharacteristics": [
+      "One card per route, centred, on a cool-grey ground.",
+      "Hairline 1px borders plus a soft, low ambient shadow; 14px card corners, 10px control corners.",
+      "A single blue accent; green and red are strictly semantic.",
+      "Schibsted Grotesk for everything readable; Azeret Mono only for the secret, the link and numbers.",
+      "Light and dark themes are token-for-token mirrors.",
+      "Motion is one short entrance per route, plus two moments on the link page (the check draws, the key glows)."
+    ],
+    "rules": [
+      {
+        "name": "The One Blue Rule",
+        "body": "The accent means \"act here\" or \"this is the key\". It never tints decoration, illustration or backgrounds beyond the soft wash behind a selected or informational element.",
+        "section": "colors"
+      },
+      {
+        "name": "The Semantic Pair Rule",
+        "body": "Green only for a completed outcome, red only for destruction or failure. Neither is used for emphasis or branding.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mirror Rule",
+        "body": "Every color is a `--c-*` token with a light and a dark value; components reference tokens, never raw colors, so both themes stay in lockstep.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono Means Material Rule",
+        "body": "Azeret Mono is used only for the secret itself, the link, the passphrase being chosen, and numbers. Never for headings, labels or decoration.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence Rule",
+        "body": "Headlines are plain sentence-case statements ending in a period (\"Already gone.\", \"Open it once.\"). Buttons are verb-first with no period (\"Copy link\", \"Unlock secret\").",
+        "section": "typography"
+      },
+      {
+        "name": "The One Lift Rule",
+        "body": "Only the route's card casts a shadow. Controls inside it stay flat; depth inside the card is made with hairlines and recessed wells.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** give each route one centred card (720, 640 or 460px wide) on the Cool Grey Ground, with at most a headline above it and, below it, either the create page's three-column trust row or an action row.",
+      "**Do** reference colors only through the `--c-*` tokens so light and dark stay mirrored.",
+      "**Do** keep Confident Blue for primary actions, focus, selection and the link key; keep green for success and red for destruction.",
+      "**Do** set the secret, the link and numbers in Azeret Mono with tabular figures, and everything else in Schibsted Grotesk.",
+      "**Do** keep controls at 44px minimum height (40px for in-card option boxes and the stepper) with 10px radii, and cards at 14px.",
+      "**Do** make destruction two-step and inline: a quiet danger button, then a red confirmation panel with Cancel focused first.",
+      "**Do** write sentence-case headlines ending in a period, verb-first button labels, and state what the code actually does.",
+      "**Do** add every new string to both the English and the Norwegian dictionaries and check the Norwegian layout at 375px and 1440px.",
+      "**Do** limit motion to the rise entrance and state feedback, on the `cubic-bezier(0.16, 1, 0.3, 1)` curve, and honor reduced motion."
+    ],
+    "donts": [
+      "**Don't** use themed metaphors: no envelopes, seals, stamps, postal labels, \"Rekommandert\" markings, vault doors or other staged props. Lock, unlock, shield, flame and check icons are functional signals and stay.",
+      "**Don't** add marketing chrome: no gradient heroes, feature-card grids, blobs, testimonials or badge rows. The trust row stays three unboxed items, never cards.",
+      "**Don't** collapse the trust row back into a one-line trust line; the user chose the three-column row.",
+      "**Don't** add a lede, kicker or eyebrow above or below the create headline.",
+      "**Don't** put shadows on controls inside a card, or use hard, offset or colored shadows.",
+      "**Don't** use blue, green or red decoratively, or add a second accent hue.",
+      "**Don't** use mono for headings or labels, or a display face other than Schibsted Grotesk.",
+      "**Don't** turn the expiry options back into a dropdown or split Max views and Passphrase onto separate sections.",
+      "**Don't** show the passphrase field or its hint while the passphrase switch is off."
+    ]
+  }
+}

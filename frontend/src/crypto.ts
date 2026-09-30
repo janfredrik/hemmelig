@@ -1,6 +1,11 @@
 const ALGO = { name: 'AES-GCM', length: 256 } as const
 const IV_LEN = 12
 
+// Web Crypto is only exposed in secure contexts (HTTPS or localhost).
+export function cryptoAvailable(): boolean {
+  return typeof crypto !== 'undefined' && !!crypto.subtle
+}
+
 export async function generateKey(): Promise<CryptoKey> {
   return crypto.subtle.generateKey(ALGO, true, ['encrypt', 'decrypt'])
 }

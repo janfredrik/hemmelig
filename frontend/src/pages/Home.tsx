@@ -1,61 +1,55 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { generateKey, keyToBase64url, encrypt } from '../crypto'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { generateKey, keyToBase64url, encrypt, cryptoAvailable } from '../crypto'
 import { apiCreateSecret } from '../api'
+import { useLang } from '../i18n'
 import Layout from '../components/Layout'
-import { ArrowRightIcon, ShieldIcon, Spinner } from '../components/Icons'
+import { AlertIcon, ArrowRightIcon, CheckIcon, FlameIcon, LockIcon, MinusIcon, PlusIcon, ShieldIcon, Spinner } from '../components/Icons'
 
-const EXPIRY_OPTIONS = [
-  { label: '1 hour',  value: 3600 },
-  { label: '6 hours', value: 21600 },
-  { label: '1 day',   value: 86400 },
-  { label: '3 days',  value: 259200 },
-  { label: '7 days',  value: 604800 },
-  { label: '30 days', value: 2592000 },
-]
+export const EXPIRY_OPTIONS = [3600, 21600, 86400, 259200, 604800, 2592000] as const
+export type Expiry = typeof EXPIRY_OPTIONS[number]
 
 const MAX_VIEWS = 100
 
-function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
+function Switch({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
     <button
+      type="button"
       role="switch"
       aria-checked={checked}
       aria-label={label}
       onClick={() => onChange(!checked)}
-      className={`relative inline-flex w-[46px] h-7 rounded-full transition-colors duration-200 shrink-0 ${
-        checked ? 'bg-app-accent' : 'bg-app-track'
+      className={`relative inline-flex w-11 h-[26px] rounded-full transition-colors duration-200 shrink-0 ${
+        checked ? 'bg-app-accent' : 'bg-app-border'
       }`}
     >
-      <span className={`absolute top-[3px] left-[3px] w-[22px] h-[22px] rounded-full bg-white shadow-sm transition-transform duration-200 ${
+      <span className={`absolute top-[3px] left-[3px] w-5 h-5 rounded-full bg-white shadow-sm transition-transform duration-200 ease-out ${
         checked ? 'translate-x-[18px]' : 'translate-x-0'
       }`} />
     </button>
   )
 }
 
-const TRUST_POINTS = [
-  { title: 'Encrypted in your browser', body: 'AES-256-GCM via the Web Crypto API.' },
-  { title: 'The key stays in the link', body: 'It sits after the #, so it is never sent to the server.' },
-  { title: 'Burns after reading',       body: 'Gone after the last view or when time runs out.' },
-]
-
 export default function Home() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const { t } = useLang()
+  const burned = (location.state as { burned?: boolean } | null)?.burned
 
-  const [content, setContent]           = useState('')
-  const [expiresIn, setExpiresIn]       = useState(259200)
-  const [maxViews, setMaxViews]         = useState(1)
-  const [pwdEnabled, setPwdEnabled]     = useState(false)
-  const [password, setPassword]         = useState('')
-  const [loading, setLoading]           = useState(false)
-  const [error, setError]               = useState('')
+  const [content, setContent]       = useState('')
+  const [expiresIn, setExpiresIn]   = useState<Expiry>(259200)
+  const [maxViews, setMaxViews]     = useState(1)
+  const [pwdEnabled, setPwdEnabled] = useState(false)
+  const [password, setPassword]     = useState('')
+  const [loading, setLoading]       = useState(false)
+  const [error, setError]           = useState<'' | 'empty' | 'passphrase' | 'insecure' | string>('')
 
   const handleCreate = async () => {
-    if (!content.trim()) {
-      setError('Please enter a secret message.')
-      return
-    }
+    if (loading) return
+    if (!content.trim()) return setError('empty')
+    if (pwdEnabled && !password) return setError('passphrase')
+    if (!cryptoAvailable()) return setError('insecure')
+
     setLoading(true)
     setError('')
     try {
@@ -63,185 +57,174 @@ export default function Home() {
       const encryptedData = await encrypt(content, key)
       const keyB64        = await keyToBase64url(key)
 
-      const isPasswordProtected = pwdEnabled && password.length > 0
       const id = await apiCreateSecret({
         encryptedData,
         maxViews,
         expiresIn,
-        password: isPasswordProtected ? password : '',
-        isPasswordProtected,
+        password: pwdEnabled ? password : '',
+        isPasswordProtected: pwdEnabled,
       })
 
       const secretUrl = `${window.location.origin}/secret/${id}#key=${keyB64}`
-      const expiryLabel = EXPIRY_OPTIONS.find(o => o.value === expiresIn)?.label ?? ''
       navigate(`/created/${id}`, {
-        state: { secretUrl, id, expiryLabel, maxViews, isPasswordProtected },
+        state: { secretUrl, expiresIn, maxViews, isPasswordProtected: pwdEnabled },
       })
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Something went wrong.')
-    } finally {
+      setError(e instanceof Error ? e.message : t('home.err.generic'))
       setLoading(false)
     }
   }
 
+  const errorText =
+    error === 'empty' ? t('home.err.empty') :
+    error === 'passphrase' ? t('home.err.passphrase') :
+    error === 'insecure' ? t('err.insecure') : error
+
   return (
     <Layout>
-      <div className="max-w-[1184px] mx-auto flex flex-col gap-10">
+      <div className="rise max-w-[720px] mx-auto flex flex-col gap-6 sm:gap-8">
 
-        {/* Hero */}
-        <div className="flex flex-col gap-5">
-          <h1 className="display text-5xl sm:text-[56px] lg:text-[64px] xl:text-[76px] sm:leading-[0.95] lg:whitespace-nowrap">
-            Passwords don’t belong <span className="italic text-app-muted">in chat history.</span>
-          </h1>
-          <p className="max-w-[560px] text-[15px] leading-relaxed text-app-muted">
-            Your message is encrypted in this browser before it leaves. The key lives only in the
-            link — the server never sees the plaintext.
+        {burned && (
+          <p role="status" className="flex items-center justify-center gap-2 rounded-[10px] bg-app-success-soft px-4 py-3 text-sm font-medium text-app-success">
+            <CheckIcon /> {t('home.burned')}
           </p>
-        </div>
+        )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] gap-6 items-stretch">
+        <h1 className="display text-center text-[36px] sm:text-[52px] pt-2 sm:pt-6">
+          <span className="sm:block">{t('home.title.a')}</span>{' '}
+          <span className="sm:block text-app-muted">{t('home.title.b')}</span>
+        </h1>
 
-          {/* Composer */}
-          <section className="card flex flex-col overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-[18px] border-b border-app-border">
-              <label htmlFor="secret" className="text-sm font-semibold">Your secret</label>
-              <span className="font-mono text-xs text-app-muted">
-                {content.length} {content.length === 1 ? 'character' : 'characters'}
+        <section className="card overflow-hidden">
+          <div className="transition-shadow focus-within:shadow-[inset_0_0_0_2px_rgb(var(--c-accent))] rounded-t-[14px]">
+            <div className="flex items-center justify-between gap-4 px-5 sm:px-6 pt-5">
+              <label htmlFor="secret" className="text-[15px] font-semibold">{t('home.secret')}</label>
+              <span className="text-[13px] text-app-muted">
+                <span className="font-mono tabular-nums">{content.length}</span> {content.length === 1 ? t('home.chars.one') : t('home.chars.other')}
               </span>
             </div>
             <textarea
               id="secret"
               value={content}
-              onChange={e => setContent(e.target.value)}
-              placeholder="Paste a password, an API key, a private note…"
-              className="flex-1 min-h-[300px] p-6 bg-transparent font-mono text-[15px] leading-[1.7] resize-none focus:outline-none"
+              onChange={e => { setContent(e.target.value); setError('') }}
+              onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleCreate() }}
+              placeholder={t('home.placeholder')}
+              aria-invalid={error === 'empty'}
+              className="block w-full min-h-[150px] sm:min-h-[170px] px-5 sm:px-6 pt-3 pb-5 bg-transparent font-mono text-[15px] leading-[1.7] resize-y focus:outline-none"
             />
-            <div className="flex items-center gap-3 px-6 py-4 border-t border-app-border">
-              <span className="font-mono text-[15px] text-app-muted" aria-hidden="true">#</span>
-              <label htmlFor="title" className="sr-only">Title</label>
-              <input
-                id="title"
-                type="text"
-                placeholder="Optional title — not encrypted"
-                className="flex-1 h-7 bg-transparent text-sm focus:outline-none"
-              />
-            </div>
-            {error && (
-              <div role="alert" className="px-6 py-3 border-t border-app-ember/40 bg-app-ember-soft text-app-ember text-sm">
-                {error}
-              </div>
-            )}
-            <div className="flex items-center gap-2.5 px-6 py-3.5 bg-app-raised border-t border-app-border text-[13px] text-app-muted">
-              <ShieldIcon size={14} />
-              Encrypted locally with a fresh 256-bit key before upload
-            </div>
-          </section>
+          </div>
 
-          {/* Settings */}
-          <section className="card p-6 flex flex-col gap-6">
-
-            <fieldset className="flex flex-col gap-3">
-              <legend className="text-sm font-semibold mb-3">Expires after</legend>
-              <div className="grid grid-cols-3 gap-2">
-                {EXPIRY_OPTIONS.map(o => {
-                  const active = o.value === expiresIn
-                  return (
-                    <button
-                      key={o.value}
-                      type="button"
-                      aria-pressed={active}
-                      onClick={() => setExpiresIn(o.value)}
-                      className={`h-11 rounded-[10px] border text-sm transition-colors ${
-                        active
-                          ? 'bg-app-ink border-app-ink text-app-bg font-semibold'
-                          : 'bg-app-raised border-app-border text-app-ink hover:border-app-muted'
-                      }`}
-                    >
-                      {o.label}
-                    </button>
-                  )
-                })}
+          <div className="flex flex-col gap-5 px-5 sm:px-6 py-5 border-t border-app-border">
+            <fieldset className="flex flex-col gap-2">
+              <legend className="field-label mb-2">{t('home.expires')}</legend>
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
+                {EXPIRY_OPTIONS.map(v => (
+                  <label
+                    key={v}
+                    className="relative flex items-center justify-center h-10 px-1 rounded-[9px] border text-sm whitespace-nowrap cursor-pointer select-none transition-colors
+                               border-app-border bg-app-surface text-app-ink hover:bg-app-subtle
+                               has-[:checked]:border-app-accent has-[:checked]:bg-app-accent-soft has-[:checked]:text-app-accent has-[:checked]:font-semibold
+                               has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[rgb(var(--c-accent))]"
+                  >
+                    <input
+                      type="radio"
+                      name="expiry"
+                      value={v}
+                      checked={v === expiresIn}
+                      onChange={() => setExpiresIn(v)}
+                      className="sr-only"
+                    />
+                    {t(`expiry.${v}` as never)}
+                  </label>
+                ))}
               </div>
             </fieldset>
 
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex flex-col gap-1">
-                <span className="text-sm font-semibold" id="views-label">Max views</span>
-                <span className="text-[13px] text-app-muted">Burns after the last view</span>
-              </div>
-              <div className="flex items-center rounded-xl border border-app-border bg-app-raised" role="group" aria-labelledby="views-label">
-                <button
-                  type="button"
-                  aria-label="Fewer views"
-                  disabled={maxViews <= 1}
-                  onClick={() => setMaxViews(v => Math.max(1, v - 1))}
-                  className="w-11 h-11 text-lg disabled:opacity-40"
-                >−</button>
-                <input
-                  type="number"
-                  min={1}
-                  max={MAX_VIEWS}
-                  value={maxViews}
-                  aria-label="Max views"
-                  onChange={e => setMaxViews(Math.min(MAX_VIEWS, Math.max(1, Number(e.target.value) || 1)))}
-                  className="w-10 bg-transparent text-center font-mono text-base font-medium focus:outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                />
-                <button
-                  type="button"
-                  aria-label="More views"
-                  disabled={maxViews >= MAX_VIEWS}
-                  onClick={() => setMaxViews(v => Math.min(MAX_VIEWS, v + 1))}
-                  className="w-11 h-11 text-lg disabled:opacity-40"
-                >+</button>
-              </div>
-            </div>
-
-            <div className="h-px bg-app-border" />
-
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold">Passphrase</span>
-                <Toggle checked={pwdEnabled} onChange={setPwdEnabled} label="Passphrase protection" />
-              </div>
-              {pwdEnabled && (
-                <>
-                  <label htmlFor="pass" className="sr-only">Passphrase</label>
+            <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4 pt-4 border-t border-app-border">
+              <div className="flex items-center justify-between sm:justify-start gap-4 w-full sm:w-auto">
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold" id="views-label">{t('home.views')}</span>
+                  <span className="text-[13px] text-app-muted">{t('home.viewsHint')}</span>
+                </div>
+                <div className="flex items-center h-10 rounded-[9px] border border-app-border bg-app-surface transition-[border-color,box-shadow] focus-within:border-app-accent focus-within:ring-[3px] focus-within:ring-app-accent/20" role="group" aria-labelledby="views-label">
+                  <button
+                    type="button"
+                    aria-label={t('home.fewer')}
+                    disabled={maxViews <= 1}
+                    onClick={() => setMaxViews(v => Math.max(1, v - 1))}
+                    className="w-10 h-full flex items-center justify-center rounded-l-[9px] text-app-muted hover:text-app-ink hover:bg-app-subtle transition-colors disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+                  ><MinusIcon size={14} /></button>
                   <input
-                    id="pass"
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder="Choose a passphrase"
-                    autoFocus
-                    className="field font-mono"
+                    type="number"
+                    min={1}
+                    max={MAX_VIEWS}
+                    value={maxViews}
+                    aria-label={t('home.views')}
+                    onFocus={e => e.target.select()}
+                    onChange={e => setMaxViews(Math.min(MAX_VIEWS, Math.max(1, Number(e.target.value) || 1)))}
+                    className="w-9 bg-transparent text-center font-mono text-[15px] font-medium tabular-nums focus:outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   />
-                  <span className="text-[13px] text-app-muted">Send it separately from the link.</span>
-                </>
-              )}
-            </div>
-
-            <button
-              onClick={handleCreate}
-              disabled={loading}
-              className="btn-accent mt-auto h-14 rounded-[14px] text-base"
-            >
-              {loading ? <><Spinner /> Encrypting…</> : <>Encrypt &amp; create link <ArrowRightIcon size={18} /></>}
-            </button>
-          </section>
-        </div>
-
-        {/* Trust points */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
-          {TRUST_POINTS.map((p, i) => (
-            <div key={p.title} className="flex gap-3.5">
-              <span className="font-serif text-[28px] leading-none text-app-accent">0{i + 1}</span>
-              <div className="flex flex-col gap-1">
-                <span className="text-sm font-semibold">{p.title}</span>
-                <span className="text-[13px] leading-normal text-app-muted">{p.body}</span>
+                  <button
+                    type="button"
+                    aria-label={t('home.more')}
+                    disabled={maxViews >= MAX_VIEWS}
+                    onClick={() => setMaxViews(v => Math.min(MAX_VIEWS, v + 1))}
+                    className="w-10 h-full flex items-center justify-center rounded-r-[9px] text-app-muted hover:text-app-ink hover:bg-app-subtle transition-colors disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+                  ><PlusIcon size={14} /></button>
+                </div>
               </div>
+
+              <label className="flex items-center justify-between gap-3 w-full sm:w-auto cursor-pointer select-none">
+                <span className="text-sm font-semibold" id="pass-label">{t('home.passphrase')}</span>
+                <Switch checked={pwdEnabled} onChange={v => { setPwdEnabled(v); setError('') }} label={t('home.passphrase')} />
+              </label>
             </div>
+
+            {pwdEnabled && (
+              <div className="rise flex flex-col gap-1.5">
+                <input
+                  id="pass"
+                  type="password"
+                  value={password}
+                  onChange={e => { setPassword(e.target.value); setError('') }}
+                  onKeyDown={e => e.key === 'Enter' && handleCreate()}
+                  placeholder={t('home.passphrasePlaceholder')}
+                  aria-labelledby="pass-label"
+                  aria-describedby="pass-hint"
+                  autoFocus
+                  aria-invalid={error === 'passphrase'}
+                  className="field font-mono"
+                />
+                <span id="pass-hint" className="text-[13px] text-app-muted">{t('home.passphraseHint')}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-3 px-5 sm:px-6 pb-5 sm:pb-6">
+            <p role="alert" className="empty:hidden flex items-start gap-2 rounded-[10px] bg-app-danger-soft px-3.5 py-2.5 text-sm text-app-danger">
+              {errorText && <><AlertIcon size={16} className="shrink-0 mt-0.5" />{errorText}</>}
+            </p>
+            <button onClick={handleCreate} disabled={loading} className="btn-primary h-12 text-base">
+              {loading ? <><Spinner /> {t('home.submitting')}</> : <>{t('home.submit')} <ArrowRightIcon size={18} /></>}
+            </button>
+          </div>
+        </section>
+
+        <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+          {([
+            { icon: <LockIcon size={16} />,   i: 1 },
+            { icon: <ShieldIcon size={16} />, i: 2 },
+            { icon: <FlameIcon size={16} />,  i: 3 },
+          ] as const).map(({ icon, i }) => (
+            <li key={i} className="flex gap-3">
+              <span className="mt-0.5 w-7 h-7 shrink-0 rounded-full bg-app-accent-soft text-app-accent flex items-center justify-center">{icon}</span>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-sm font-semibold">{t(`home.fine.${i}.t` as never)}</span>
+                <span className="text-[13px] leading-normal text-app-muted">{t(`home.fine.${i}.b` as never)}</span>
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </Layout>
   )

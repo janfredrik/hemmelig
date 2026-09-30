@@ -23,12 +23,6 @@ export const LockIcon = (p: IconProps) => (
   <Svg {...p}><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></Svg>
 )
 
-export const LockKeyholeIcon = (p: IconProps) => (
-  <Svg {...p} strokeWidth={1.75}>
-    <rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /><circle cx="12" cy="16" r="1.25" />
-  </Svg>
-)
-
 export const UnlockIcon = (p: IconProps) => (
   <Svg {...p}><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 7.5-2" /></Svg>
 )
@@ -51,6 +45,11 @@ export const CopyIcon = (p: IconProps) => (
 
 export const PlusIcon = (p: IconProps) => (
   <Svg {...p}><path d="M12 5v14M5 12h14" /></Svg>
+)
+
+
+export const MinusIcon = (p: IconProps) => (
+  <Svg {...p}><path d="M5 12h14" /></Svg>
 )
 
 export const FlameIcon = (p: IconProps) => (
