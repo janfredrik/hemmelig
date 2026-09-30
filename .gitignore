@@ -1,0 +1,5 @@
+# Impeccable working files (review captures, caches, question logs)
+.impeccable/review/
+.impeccable/questions/
+.impeccable/hook.cache.json
+frontend/.impeccable/
