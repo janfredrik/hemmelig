@@ -16,7 +16,7 @@ COPY --from=frontend /app/dist ./static
 RUN go mod tidy && CGO_ENABLED=0 go build -ldflags="-w -s" -o hemmelig .
 
 # Stage 3 — minimal runtime image (~15 MB)
-FROM alpine:3.20
+FROM alpine:3.24
 RUN apk --no-cache add ca-certificates tzdata
 WORKDIR /app
 COPY --from=backend /app/hemmelig .
