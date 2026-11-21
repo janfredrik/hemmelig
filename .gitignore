@@ -3,3 +3,7 @@
 .impeccable/questions/
 .impeccable/hook.cache.json
 frontend/.impeccable/
+
+# Build output and dependencies
+node_modules/
+frontend/dist/
