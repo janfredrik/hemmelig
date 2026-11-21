@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @font-face {
   font-family: 'Schibsted Grotesk';
@@ -16,6 +14,134 @@
   font-weight: 400 600;
   font-display: swap;
   src: url('/fonts/azeret-mono-latin.woff2') format('woff2');
+}
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-app-bg: rgb(var(--c-bg));
+  --color-app-surface: rgb(var(--c-surface));
+  --color-app-subtle: rgb(var(--c-subtle));
+  --color-app-border: rgb(var(--c-border));
+  --color-app-ink: rgb(var(--c-ink));
+  --color-app-muted: rgb(var(--c-muted));
+  --color-app-accent: rgb(var(--c-accent));
+  --color-app-on-accent: rgb(var(--c-on-accent));
+  --color-app-accent-soft: rgb(var(--c-accent-soft));
+  --color-app-success: rgb(var(--c-success));
+  --color-app-success-soft: rgb(var(--c-success-soft));
+  --color-app-danger: rgb(var(--c-danger));
+  --color-app-danger-soft: rgb(var(--c-danger-soft));
+
+  --font-sans: 'Schibsted Grotesk', system-ui, sans-serif;
+  --font-mono: 'Azeret Mono', ui-monospace, monospace;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  /* Tailwind v4 resets buttons to cursor: default; keep the v3 pointer. */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility card {
+  @apply bg-app-surface border border-app-border rounded-[14px];
+  box-shadow:
+    0 1px 2px rgb(16 22 35 / 0.04),
+    0 8px 24px -12px rgb(16 22 35 / 0.12);
+  :root.dark & {
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.3),
+      0 12px 32px -16px rgb(0 0 0 / 0.6);
+  }
+}
+
+@utility display {
+  @apply font-semibold tracking-tight leading-[1.05] text-balance;
+}
+
+@utility field-label {
+  @apply text-[13px] font-medium text-app-muted;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 h-11 px-4 rounded-[10px] text-[15px] font-medium
+           transition-[background-color,border-color,color,opacity] duration-150 cursor-pointer
+           disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+@utility btn-primary {
+  @apply btn bg-app-accent text-app-on-accent font-semibold hover:bg-app-accent/90
+           disabled:opacity-100 disabled:bg-app-subtle disabled:text-app-muted disabled:border disabled:border-app-border;
+}
+
+@utility btn-secondary {
+  @apply btn bg-app-surface border border-app-border text-app-ink hover:bg-app-subtle;
+}
+
+@utility btn-danger-quiet {
+  @apply btn text-app-danger hover:bg-app-danger-soft;
+}
+
+@utility btn-danger {
+  @apply btn bg-app-danger text-app-bg font-semibold hover:bg-app-danger/90;
+}
+
+@utility field {
+  @apply w-full h-11 px-3.5 rounded-[10px] bg-app-surface border border-app-border text-app-ink text-[15px]
+           transition-[border-color,box-shadow] focus:outline-hidden focus:border-app-accent focus:ring-[3px] focus:ring-app-accent/20
+           aria-invalid:border-app-danger;
+}
+
+@utility rise {
+  /* One entrance per route: content is visible by default and only eases in. */
+  animation: rise 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@utility check-draw {
+  /* The success check draws itself on the link page. */
+  & path {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    animation: draw 420ms cubic-bezier(0.16, 1, 0.3, 1) 180ms forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    & path {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
+@utility key-mark {
+  @apply rounded-[3px] px-0.5 -mx-0.5 bg-app-accent/10;
+  animation: key-glow 1200ms cubic-bezier(0.16, 1, 0.3, 1) 400ms both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 }
 
 @layer base {
@@ -80,75 +206,14 @@
 }
 
 @layer components {
-  .card {
-    @apply bg-app-surface border border-app-border rounded-[14px];
-    box-shadow: 0 1px 2px rgb(16 22 35 / 0.04), 0 8px 24px -12px rgb(16 22 35 / 0.12);
-  }
-  :root.dark .card {
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -16px rgb(0 0 0 / 0.6);
-  }
-
-  .display {
-    @apply font-semibold tracking-[-0.025em] leading-[1.05] text-balance;
-  }
-
-  .field-label {
-    @apply text-[13px] font-medium text-app-muted;
-  }
-
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 h-11 px-4 rounded-[10px] text-[15px] font-medium
-           transition-[background-color,border-color,color,opacity] duration-150 cursor-pointer
-           disabled:opacity-50 disabled:cursor-not-allowed;
-  }
-
-  .btn-primary {
-    @apply btn bg-app-accent text-app-on-accent font-semibold hover:bg-app-accent/90
-           disabled:opacity-100 disabled:bg-app-subtle disabled:text-app-muted disabled:border disabled:border-app-border;
-  }
-
-  .btn-secondary {
-    @apply btn bg-app-surface border border-app-border text-app-ink hover:bg-app-subtle;
-  }
-
-  .btn-danger-quiet {
-    @apply btn text-app-danger hover:bg-app-danger-soft;
-  }
-
-  .btn-danger {
-    @apply btn bg-app-danger text-app-bg font-semibold hover:bg-app-danger/90;
-  }
-
-  .field {
-    @apply w-full h-11 px-3.5 rounded-[10px] bg-app-surface border border-app-border text-app-ink text-[15px]
-           transition-[border-color,box-shadow] focus:outline-none focus:border-app-accent focus:ring-[3px] focus:ring-app-accent/20
-           aria-[invalid=true]:border-app-danger;
-  }
-
-
-  /* One entrance per route: content is visible by default and only eases in. */
   @keyframes rise {
     from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: none; }
   }
-  .rise { animation: rise 280ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-
-  /* The success check draws itself on the link page. */
   @keyframes draw { to { stroke-dashoffset: 0; } }
-  .check-draw path {
-    stroke-dasharray: 24;
-    stroke-dashoffset: 24;
-    animation: draw 420ms cubic-bezier(0.16, 1, 0.3, 1) 180ms forwards;
-  }
 
   @keyframes key-glow {
     from { background-color: rgb(var(--c-accent) / 0.22); }
     to   { background-color: rgb(var(--c-accent) / 0.08); }
-  }
-  .key-mark { @apply rounded-[3px] px-0.5 -mx-0.5 bg-app-accent/10; animation: key-glow 1200ms cubic-bezier(0.16, 1, 0.3, 1) 400ms both; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .rise, .key-mark { animation: none; }
-    .check-draw path { animation: none; stroke-dashoffset: 0; }
   }
 }

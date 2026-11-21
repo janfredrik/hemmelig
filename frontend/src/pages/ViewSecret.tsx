@@ -165,7 +165,7 @@ export default function ViewSecret() {
                 {copied ? t('view.copied') : t('view.copy')}
               </button>
             </div>
-            <pre className="m-0 px-5 sm:px-6 py-6 font-mono text-[15px] leading-[1.75] whitespace-pre-wrap break-words">
+            <pre className="m-0 px-5 sm:px-6 py-6 font-mono text-[15px] leading-[1.75] whitespace-pre-wrap wrap-break-word">
               {state.content}
             </pre>
             <div

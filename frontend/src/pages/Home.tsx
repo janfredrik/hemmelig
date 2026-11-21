@@ -23,7 +23,7 @@ function Switch({ checked, onChange, label }: { checked: boolean; onChange: (v: 
         checked ? 'bg-app-accent' : 'bg-app-border'
       }`}
     >
-      <span className={`absolute top-[3px] left-[3px] w-5 h-5 rounded-full bg-white shadow-sm transition-transform duration-200 ease-out ${
+      <span className={`absolute top-[3px] left-[3px] w-5 h-5 rounded-full bg-white shadow-xs transition-transform duration-200 ease-out ${
         checked ? 'translate-x-[18px]' : 'translate-x-0'
       }`} />
     </button>
@@ -110,7 +110,7 @@ export default function Home() {
               onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleCreate() }}
               placeholder={t('home.placeholder')}
               aria-invalid={error === 'empty'}
-              className="block w-full min-h-[150px] sm:min-h-[170px] px-5 sm:px-6 pt-3 pb-5 bg-transparent font-mono text-[15px] leading-[1.7] resize-y focus:outline-none"
+              className="block w-full min-h-[150px] sm:min-h-[170px] px-5 sm:px-6 pt-3 pb-5 bg-transparent font-mono text-[15px] leading-[1.7] resize-y focus:outline-hidden"
             />
           </div>
 
@@ -123,8 +123,8 @@ export default function Home() {
                     key={v}
                     className="relative flex items-center justify-center h-10 px-1 rounded-[9px] border text-sm whitespace-nowrap cursor-pointer select-none transition-colors
                                border-app-border bg-app-surface text-app-ink hover:bg-app-subtle
-                               has-[:checked]:border-app-accent has-[:checked]:bg-app-accent-soft has-[:checked]:text-app-accent has-[:checked]:font-semibold
-                               has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[rgb(var(--c-accent))]"
+                               has-checked:border-app-accent has-checked:bg-app-accent-soft has-checked:text-app-accent has-checked:font-semibold
+                               has-focus-visible:outline-solid has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-[rgb(var(--c-accent))]"
                   >
                     <input
                       type="radio"
@@ -162,7 +162,7 @@ export default function Home() {
                     aria-label={t('home.views')}
                     onFocus={e => e.target.select()}
                     onChange={e => setMaxViews(Math.min(MAX_VIEWS, Math.max(1, Number(e.target.value) || 1)))}
-                    className="w-9 bg-transparent text-center font-mono text-[15px] font-medium tabular-nums focus:outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    className="w-9 bg-transparent text-center font-mono text-[15px] font-medium tabular-nums focus:outline-hidden [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   />
                   <button
                     type="button"

@@ -46,7 +46,7 @@ export default function Layout({ children, center = false }: { children: React.R
                 aria-pressed={lang === l.value}
                 onClick={() => setLang(l.value)}
                 className={`w-10 rounded-[7px] text-[13px] font-semibold transition-colors ${
-                  lang === l.value ? 'bg-app-surface text-app-ink shadow-sm' : 'text-app-muted hover:text-app-ink'
+                  lang === l.value ? 'bg-app-surface text-app-ink shadow-xs' : 'text-app-muted hover:text-app-ink'
                 }`}
               >
                 {l.label}
